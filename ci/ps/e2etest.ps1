@@ -49,6 +49,10 @@ mkdir $testProjectBaseFolder
 cd $testProjectBaseFolder
 mvn archetype:generate -DarchetypeGroupId="com.microsoft.azure" -DarchetypeArtifactId="azure-functions-archetype" -DarchetypeVersion="$archetypeVersion" -DgroupId="com.microsoft" -DartifactId="e2etestproject" -Dversion="1.0-SNAPSHOT" -Dpackage="com.microsoft" -B
 $testFunctionAppName = ([xml](gc $testProjectPomLocation)).project.properties.functionAppName
+
+echo $testFunctionAppName
+echo $functionPom
+echo $functionVersion
 # Update e2e project pom to use the latest maven plugin
 UpdateMavenPluginVersion $testProjectPomLocation $functionVersion
 mvn -f $testProjectPomLocation clean package
