@@ -5,10 +5,13 @@
 
 package com.microsoft.azure.toolkit.lib.legacy.function.template;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import lombok.Data;
 
 // This is the json template class correspond to (bindings.json).bindings.settings
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -20,6 +23,8 @@ public class FunctionSettingTemplate {
     private boolean required;
     private String label;
     private String help;
+    @JsonProperty(value = "emum")
+    private SettingEnum[] settingEnum;
     private ValidatorTemplate[] validators;
 
     @JsonGetter
@@ -92,11 +97,28 @@ public class FunctionSettingTemplate {
         this.validators = validators;
     }
 
+    @JsonGetter
+    public SettingEnum[] getEnum() {
+        return settingEnum;
+    }
+
+    @JsonSetter
+    public void setEnum(SettingEnum[] settingEnum) {
+        this.settingEnum = settingEnum;
+    }
+
     public String getSettingRegex() {
         return (validators != null && validators.length > 0) ? validators[0].getExpression() : null;
     }
 
     public String getErrorText() {
         return (validators != null && validators.length > 0) ? validators[0].getErrorText() : null;
+    }
+
+    @Data
+    @JsonAutoDetect
+    public static class SettingEnum {
+        private String value;
+        private String display;
     }
 }
